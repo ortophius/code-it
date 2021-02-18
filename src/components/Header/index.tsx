@@ -1,9 +1,7 @@
 import React from 'react';
 import {
-  AppBar, Box, Button, ButtonGroup, makeStyles, Toolbar, Typography,
+  AppBar, Button, ButtonGroup, makeStyles, Toolbar, Typography,
 } from '@material-ui/core';
-import { Link } from 'react-router-dom';
-import { orange } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     transition: 'color 0.2s',
   },
   it: {
-    color: orange[500],
+    color: theme.palette.secondary.light,
   },
 }));
 
