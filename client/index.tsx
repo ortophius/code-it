@@ -1,8 +1,11 @@
 import React from 'react';
 import { hydrate } from 'react-dom';
-import App from 'components/App/App';
+import App from 'components/App';
 import { Provider } from 'react-redux';
 import { getStore } from 'store';
+import theme from 'mui/theme';
+import { ThemeProvider } from '@material-ui/core/styles';
+import { CssBaseline } from '@material-ui/core';
 
 /**
  * First, we'll obtain STATE object passed from server.
@@ -23,9 +26,13 @@ const store = getStore(state!);
 delete window.STATE;
 
 const JSX = (
-  <Provider store={store}>
-    <App />
-  </Provider>
+  <ThemeProvider theme={theme}>
+    <Provider store={store}>
+      <CssBaseline>
+        <App />
+      </CssBaseline>
+    </Provider>
+  </ThemeProvider>
 );
 
 /**

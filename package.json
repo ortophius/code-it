@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack --watch",
+    "start": "npm-run-all --parallel watch server",
+    "watch": "webpack --watch",
+    "server": "nodemon ./dist/server/server.js",
     "build": "webpack"
   },
   "author": "",
@@ -12,6 +14,7 @@
   "devDependencies": {
     "@types/react": "^17.0.2",
     "@types/react-dom": "^17.0.1",
+    "@types/react-router-dom": "^5.1.7",
     "@typescript-eslint/eslint-plugin": "^4.15.0",
     "css-loader": "^5.0.2",
     "eslint-config-airbnb-typescript": "^12.3.1",
@@ -23,6 +26,7 @@
     "html-loader": "^1.3.2",
     "html-webpack-plugin": "^5.1.0",
     "node-sass": "^5.0.0",
+    "npm-run-all": "^4.1.5",
     "path": "^0.12.7",
     "sass-loader": "^11.0.1",
     "style-loader": "^2.0.0",
@@ -43,6 +47,7 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-redux": "^7.2.2",
+    "react-router-dom": "^5.2.0",
     "redux": "^4.0.5"
   }
 }

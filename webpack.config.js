@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const src = path.resolve(__dirname, 'src');
 const components = path.resolve(__dirname, 'src', 'components');
 
@@ -36,5 +37,10 @@ module.exports = {
       src,
       components
     },
-  }
+  },
+  plugins: [
+    new webpack.ProvidePlugin({
+      'React': 'react',
+    })
+  ]
 };

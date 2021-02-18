@@ -1,17 +1,19 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { start } from 'store/features/example/actions';
+import { useSelector } from 'react-redux';
 import { selectExampleMsg } from 'store/features/example';
+import { Toolbar, useTheme } from '@material-ui/core';
+import Header from 'components/Header';
 
 export default function App(): JSX.Element {
   const message = useSelector(selectExampleMsg);
-  const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(start());
+    document.getElementById('jss')?.remove();
   });
 
+  useTheme();
+
   return (
-    <h1>{message}</h1>
+    <Header />
   );
 }
