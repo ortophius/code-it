@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    display: 'inline-block',
     minHeight: '5rem',
     minWidth: '0.2rem',
     fontSize: '5rem',

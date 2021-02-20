@@ -31,7 +31,7 @@ export default function Header() {
           Code&nbsp;/&nbsp;
           <span className={classes.it}>it</span>
         </Typography>
-        <ButtonGroup variant="text">
+        <ButtonGroup color="inherit" variant="text">
           <Button>Create project</Button>
           <Button>Log in</Button>
         </ButtonGroup>
