@@ -7,12 +7,18 @@ import { ServerStyleSheets, ThemeProvider } from '@material-ui/core/styles';
 import theme from 'mui/theme';
 import App from 'components/App';
 import { CssBaseline } from '@material-ui/core';
+import mongoose from 'mongoose';
+import applyRoutes from './rest';
+
+mongoose.connect('mongodb://localhost/codeit', { useNewUrlParser: true, useUnifiedTopology: true });
 
 const SERVER_PORT = 8081; // Port for Express to listen
 
 const app = express();
 
 app.use(express.static(__dirname));
+
+applyRoutes(app);
 
 app.get('*', (req, res) => {
   const sheets = new ServerStyleSheets();
@@ -72,5 +78,5 @@ app.get('*', (req, res) => {
 });
 
 app.listen(SERVER_PORT, () => {
-  console.log(`Example app listening at http://localhost:${SERVER_PORT}`);
+  console.log(`Listening at http://localhost:${SERVER_PORT}`);
 });
