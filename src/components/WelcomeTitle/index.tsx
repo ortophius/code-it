@@ -1,5 +1,6 @@
-import { Box, Container, Link, makeStyles, Paper, Typography } from '@material-ui/core';
-import Spacing from 'components/utils/Spacing';
+import {
+  Box, Container, Link, makeStyles, Paper, Typography,
+} from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import Caret from './caret';
 
@@ -46,8 +47,7 @@ function WelcomeTitle() {
   const startTyping = () => {
     title.split('').reduce((totalTime, char) => {
       queueTyping(char, totalTime);
-      const timeOffset = (Math.random() * 150) + 200;
-
+      const timeOffset = (Math.random() * 300) + 150;
       return totalTime + timeOffset;
     }, 0);
   };
@@ -57,25 +57,25 @@ function WelcomeTitle() {
   }, []);
 
   return (
-        <Container>
-         <Paper className={classes.root} elevation={3}>
-          <Box className={classes.title} display="flex" alignItems="center" justifyContent="center">
-              <Typography className={classes.txt} component="h2">
-                {text}
-              </Typography>
-              <Caret />
-            </Box>
-            <Box className={classes.motto}>
-              <Typography component="h3">
-                {"Yet another "}
-                <Link  href="https://codepen.io/" color="secondary" variant="inherit">
-                  CodePen
-                </Link>
-                {" clone"}
-              </Typography>
-            </Box>
-         </Paper>
-        </Container>
+    <Container>
+      <Paper className={classes.root} elevation={3}>
+        <Box className={classes.title} display="flex" alignItems="center" justifyContent="center">
+          <Typography className={classes.txt} component="h2">
+            {text}
+          </Typography>
+          <Caret />
+        </Box>
+        <Box className={classes.motto}>
+          <Typography component="h3">
+            {'Yet another '}
+            <Link href="https://codepen.io/" color="secondary" variant="inherit">
+              CodePen
+            </Link>
+            {' clone'}
+          </Typography>
+        </Box>
+      </Paper>
+    </Container>
   );
 }
 

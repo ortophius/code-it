@@ -1,13 +1,15 @@
 import express from 'express';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import exampleStore from 'store';
+import { getStore } from 'store';
 import { Provider } from 'react-redux';
 import { ServerStyleSheets, ThemeProvider } from '@material-ui/core/styles';
 import theme from 'mui/theme';
 import App from 'components/App';
 import { CssBaseline } from '@material-ui/core';
 import mongoose from 'mongoose';
+import { StaticRouter } from 'react-router-dom';
+import AsyncContext from 'components/AsyncContext';
 import applyRoutes from './rest';
 
 mongoose.connect('mongodb://localhost/codeit', { useNewUrlParser: true, useUnifiedTopology: true });
@@ -20,21 +22,52 @@ app.use(express.static(__dirname));
 
 applyRoutes(app);
 
-app.get('*', (req, res) => {
+app.get('(/**)?/favicon.ico', (r, res) => {
+  res.status(404);
+  res.statusMessage = 'Not found';
+  res.send();
+});
+
+app.get('*', async (req, res) => {
+  const store = getStore();
   const sheets = new ServerStyleSheets();
+
+  const asyncContextValue = {
+    promises: [],
+    values: {},
+  };
 
   /**
    * At first we render react components into a plain string of HTML code.
    * It executes constructor and `render()` method of every component involved in app.
    */
+
+  renderToString(
+    sheets.collect(
+      <AsyncContext.Provider value={asyncContextValue}>
+        <StaticRouter location={req.path}>
+          <Provider store={store}>
+            <App />
+          </Provider>
+        </StaticRouter>
+      </AsyncContext.Provider>,
+    ),
+  );
+
+  await Promise.all(asyncContextValue.promises);
+
   const inlineApp = renderToString(
     sheets.collect(
-      <Provider store={exampleStore}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <App />
-        </ThemeProvider>
-      </Provider>,
+      <AsyncContext.Provider value={asyncContextValue}>
+        <StaticRouter location={req.path}>
+          <Provider store={store}>
+            <ThemeProvider theme={theme}>
+              <CssBaseline />
+              <App />
+            </ThemeProvider>
+          </Provider>
+        </StaticRouter>
+      </AsyncContext.Provider>,
     ),
   );
 
@@ -57,22 +90,13 @@ app.get('*', (req, res) => {
       <body>
         <div id="root">${inlineApp}</div>
         <script>
-        window.STATE = ${JSON.stringify(exampleStore.getState())};
+        window.STATE = ${JSON.stringify(store.getState())};
+        window.ASYNCCONTEXT = ${JSON.stringify(asyncContextValue)};
         </script>
         <script src="app.js"></script>
       </body>
     </html>
     `;
-
-  // const scriptTag = `
-  //   <script>
-  //     window.STATE = ${JSON.stringify(exampleStore.getState())};
-  //   </script>
-  //   <script src="app.js"></script>
-  // `;
-  // const renderedHTML = template
-  //   .replace('<div id="root"></div>', `<div id="root">${inlineApp}</div>`)
-  //   .replace('</body>', `${scriptTag}</body>`);
 
   res.send(renderedHTML);
 });

@@ -27,7 +27,8 @@ export const FileSchema = new Schema<FileDocument>({
 
 FileSchema.methods = {
   async getParent(this: FileDocument): Promise<FolderDocument> {
-    return this.populate('parent').parent as FolderDocument;
+    await this.populate('parent').execPopulate();
+    return this.parent as FolderDocument;
   },
 };
 
@@ -62,13 +63,16 @@ export const FolderSchema = new Schema<FolderDocument>({
 
 FolderSchema.methods = {
   async getParent(this: FolderDocument): Promise<FolderDocument> {
-    return this.populate('parent').parent as FolderDocument;
+    await this.populate('parent').execPopulate();
+    return this.parent as FolderDocument;
   },
   async getChildren(this: FolderDocument): Promise<FolderDocument[]> {
-    return this.populate('children').children as FolderDocument[];
+    await this.populate('children').execPopulate();
+    return this.children as FolderDocument[];
   },
   async getFiles(this: FolderDocument): Promise<File[]> {
-    return this.populate('files').files as File[];
+    await this.populate('files').execPopulate();
+    return this.files as File[];
   },
 };
 
@@ -98,7 +102,8 @@ export const ProjectSchema = new Schema<ProjectDocument>({
 
 ProjectSchema.methods = {
   async getRoot(this: ProjectDocument): Promise<FolderDocument> {
-    return this.populate('root').root as FolderDocument;
+    await this.populate('root').execPopulate();
+    return this.root as FolderDocument;
   },
 };
 
@@ -126,18 +131,38 @@ export async function createProject(): Promise<string> {
     title: 'root',
   }).save();
 
-  const files = ['index.html', 'style.css', 'app.js'];
+  const projectFiles = ['index.html', 'style.css', 'app.js'];
 
-  const filePromises = files.map(async (title) => {
+  const filePromises = projectFiles.map(async (title) => {
     const file = await new File({
       title,
       parent: rootFolder.id,
     }).save();
 
-    await rootFolder.update({ $push: { children: file } });
+    await rootFolder.update({ $push: { files: file.id } });
   });
 
   await Promise.all(filePromises);
 
   return getProjectLink(rootFolder.id);
+}
+
+export async function getProject(link: string) {
+  async function populateNodes(rootFolder: FolderDocument) {
+    await rootFolder.getFiles();
+    await rootFolder.getChildren();
+
+    const childFolders = rootFolder.children as FolderDocument[];
+    const promises = childFolders.map(async (childFolder) => { populateNodes(childFolder); });
+
+    await Promise.all(promises);
+  }
+
+  const project = await Project.findOne({ link }) as ProjectDocument;
+
+  if (!project) throw new Error(`Project ${link} does not exist`);
+
+  await project.getRoot();
+  await populateNodes(project.root as FolderDocument);
+  return project;
 }

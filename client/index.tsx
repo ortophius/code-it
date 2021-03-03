@@ -6,17 +6,24 @@ import { getStore } from 'store';
 import theme from 'mui/theme';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { CssBaseline } from '@material-ui/core';
+import { BrowserRouter } from 'react-router-dom';
+import AsyncContext, { AsyncContextValue } from 'components/AsyncContext';
 
 /**
  * First, we'll obtain STATE object passed from server.
  */
 interface WindowWithState {
-  STATE?: ExampleState;
+  STATE?: RootState;
+  ASYNCCONTEXT?: AsyncContextValue;
 }
 
 declare let window: WindowWithState;
 
-const state = window.STATE;
+const state = window.STATE!;
+const asyncContextValue = window.ASYNCCONTEXT!;
+
+delete window.STATE;
+delete window.ASYNCCONTEXT;
 
 /**
  * Now we need to create a new store based on derived state
@@ -26,13 +33,17 @@ const store = getStore(state!);
 delete window.STATE;
 
 const JSX = (
-  <ThemeProvider theme={theme}>
-    <Provider store={store}>
-      <CssBaseline>
-        <App />
-      </CssBaseline>
-    </Provider>
-  </ThemeProvider>
+  <AsyncContext.Provider value={asyncContextValue}>
+    <BrowserRouter>
+      <ThemeProvider theme={theme}>
+        <Provider store={store}>
+          <CssBaseline>
+            <App />
+          </CssBaseline>
+        </Provider>
+      </ThemeProvider>
+    </BrowserRouter>
+  </AsyncContext.Provider>
 );
 
 /**

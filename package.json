@@ -6,7 +6,7 @@
   "scripts": {
     "start": "npm-run-all --parallel watch server",
     "watch": "webpack --watch",
-    "server": "nodemon ./dist/server/server.js",
+    "server": "nodemon --inspect ./dist/server/server.js",
     "build": "webpack"
   },
   "author": "",
@@ -44,6 +44,7 @@
     "@types/mongoose": "^5.10.3",
     "@types/react-redux": "^7.1.16",
     "@types/redux": "^3.6.0",
+    "axios": "^0.21.1",
     "eslint": "^7.20.0",
     "express": "^4.17.1",
     "mongoose": "^5.11.17",
@@ -51,6 +52,7 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-redux": "^7.2.2",
+    "react-router-config": "^5.1.1",
     "react-router-dom": "^5.2.0",
     "redux": "^4.0.5"
   }

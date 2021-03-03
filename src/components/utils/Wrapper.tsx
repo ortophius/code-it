@@ -3,21 +3,21 @@ import React from 'react';
 
 const useStyles = makeStyles({
   wrapper: {
-      display: 'flex',
-      justifyContent: 'center',
-      flexDirection: 'column',
-      paddingTop: '1rem',
-    }
-})
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'column',
 
-function Wrapper(props: React.PropsWithChildren<{}>) {
+  },
+});
+
+function Wrapper({ children }: React.PropsWithChildren<{}>) {
   const classes = useStyles();
 
   return (
     <Box className={classes.wrapper}>
-      {props.children}
+      {children}
     </Box>
-  )
+  );
 }
 
 export default Wrapper;

@@ -1,15 +1,18 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { exampleReducer } from './features/example';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { projectReducer } from './features/project';
 
-const reducer = {
-  example: exampleReducer,
-};
-
-export default configureStore({
-  reducer,
+export const reducer = combineReducers({
+  project: projectReducer,
 });
 
-export const getStore = (state: ExampleState) => configureStore({
+// const store = configureStore({
+//   reducer,
+// });
+
+export type RootState = ReturnType<typeof reducer>;
+// export default store;
+
+export const getStore = (state?: RootState) => configureStore({
   reducer,
   preloadedState: state,
 });
