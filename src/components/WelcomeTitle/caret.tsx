@@ -17,14 +17,17 @@ const useStyles = makeStyles((theme) => ({
 function Caret() {
   const classes = useStyles();
   const [classNames, setClasNames] = useState(classes.root);
+  let interval: NodeJS.Timeout;
 
   useEffect(() => {
-    setInterval(() => {
+    interval = setInterval(() => {
       setClasNames((names) => {
         if (names.split(' ').length === 1) return `${classes.root} ${classes.blink}`;
         return classes.root;
       });
     }, 500);
+
+    return () => { clearInterval(interval); };
   }, []);
 
   return (

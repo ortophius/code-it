@@ -12,6 +12,7 @@ const projectSlice = createSlice({
     updateProjectInfo: (state, action) => ({
       ...state,
       ...action.payload,
+      notFound: false,
     }),
     notFound: (state) => {
       state.notFound = true;

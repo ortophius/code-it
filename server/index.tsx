@@ -93,11 +93,13 @@ app.get('*', async (req, res) => {
         window.STATE = ${JSON.stringify(store.getState())};
         window.ASYNCCONTEXT = ${JSON.stringify(asyncContextValue)};
         </script>
-        <script src="app.js"></script>
+        <script src="/app.js"></script>
       </body>
     </html>
     `;
 
+  res.status(200);
+  res.statusMessage = 'Found';
   res.send(renderedHTML);
 });
 

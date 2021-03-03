@@ -36,12 +36,14 @@ function WelcomeTitle() {
   const [text, setText] = useState('');
 
   const title = 'Code/<.it';
-
+  const timeouts: NodeJS.Timeout[] = [];
   const queueTyping = (char: string, time: number) => {
-    setTimeout(() => {
-      if (char === '<') setText((str) => str.slice(0, -1));
-      else setText((str) => str + char);
-    }, time);
+    timeouts.push(
+      setTimeout(() => {
+        if (char === '<') setText((str) => str.slice(0, -1));
+        else setText((str) => str + char);
+      }, time),
+    );
   };
 
   const startTyping = () => {
@@ -54,6 +56,7 @@ function WelcomeTitle() {
 
   useEffect(() => {
     startTyping();
+    return () => { timeouts.forEach((timer) => clearTimeout(timer)); };
   }, []);
 
   return (
