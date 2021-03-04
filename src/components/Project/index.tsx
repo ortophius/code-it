@@ -1,6 +1,6 @@
 import axios from 'axios';
 import useSSE from 'helpers/useSSE';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { notFound, selectProject, updateProjectInfo } from 'store/features/project';
@@ -24,10 +24,10 @@ export default function Project() {
     }
   }
 
-  useEffect(() => {
-    console.log(1);
-    startup();
-  }, [id]);
+  // To-do: run startup() only if id changed after furst render
+  // useEffect(() => {
+  //   startup();
+  // }, [id]);
 
   useSSE('project', startup);
 

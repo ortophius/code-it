@@ -29,6 +29,7 @@ interface File {
 interface ProjectState {
   title: string;
   root?: Folder;
+  link: string;
   notFound?: boolean;
 }
 

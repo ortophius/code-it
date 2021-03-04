@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState: ProjectState = {
   title: '',
+  link: '/',
 };
 
 const projectSlice = createSlice({
@@ -14,6 +15,9 @@ const projectSlice = createSlice({
       ...action.payload,
       notFound: false,
     }),
+    changeTitle: (state, action) => {
+      state.title = action.payload;
+    },
     notFound: (state) => {
       state.notFound = true;
     },
@@ -21,6 +25,8 @@ const projectSlice = createSlice({
 });
 
 export const selectProject = (state: RootState) => state.project;
+export const selectProjectTitle = (state: RootState) => state.project.title;
+export const selectIsNotFound = (state: RootState) => (!!(state.project.notFound));
 
 export const projectReducer = projectSlice.reducer;
-export const { updateProjectInfo, notFound } = projectSlice.actions;
+export const { updateProjectInfo, notFound, changeTitle } = projectSlice.actions;

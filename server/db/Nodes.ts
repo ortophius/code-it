@@ -76,9 +76,12 @@ FolderSchema.methods = {
   },
 };
 
-export interface ProjectDocument extends Document {
+interface ProjectBaseDocument {
   title: string;
   link?: string;
+}
+
+export interface ProjectDocument extends ProjectBaseDocument, Document {
   root: ObjectId | FolderDocument;
   getRoot(): FolderDocument;
 }
@@ -165,4 +168,24 @@ export async function getProject(link: string) {
   await project.getRoot();
   await populateNodes(project.root as FolderDocument);
   return project;
+}
+
+export type ProjectChanges = Partial<ProjectBaseDocument>;
+
+export async function editProject(link: string, changes: ProjectChanges) {
+  const allowedAttributes: Array<keyof ProjectChanges> = ['title'];
+  const filteredChanges: ProjectChanges = {};
+
+  allowedAttributes.forEach((key) => {
+    if (key in changes) filteredChanges[key] = changes[key]!;
+  });
+
+  if (Object.keys(filteredChanges).length === 0) throw new Error('Nothing to change');
+
+  if (!filteredChanges.title) throw new Error('Title must not be empty');
+
+  try {
+    await Project.updateOne({ link }, filteredChanges);
+    return true;
+  } catch (e) { throw new Error(e); }
 }

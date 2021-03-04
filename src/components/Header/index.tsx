@@ -1,9 +1,12 @@
 import React from 'react';
 import {
-  AppBar, Button, ButtonGroup, makeStyles, Toolbar, Typography,
+  AppBar, Box, Button, ButtonGroup, makeStyles, Toolbar, Typography,
 } from '@material-ui/core';
-import { Link, useHistory } from 'react-router-dom';
+import {
+  Switch, Link, Route, useHistory,
+} from 'react-router-dom';
 import axios from 'axios';
+import Title from './title';
 
 type CreateProjectResponse = {
   link: string;
@@ -21,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
     color: 'inherit',
   },
   logo: {
+    justifySelf: 'flex-start',
     fontSize: 18,
     fontWeight: 600,
     textTransform: 'uppercase',
@@ -28,6 +32,14 @@ const useStyles = makeStyles((theme) => ({
   },
   it: {
     color: theme.palette.secondary.light,
+  },
+  title: {
+    position: 'absolute',
+    left: '50%',
+    textAlign: 'center',
+    transform: 'translate(-50%, 0)',
+  },
+  buttons: {
   },
 }));
 
@@ -50,7 +62,14 @@ export default function Header() {
             <span className={classes.it}>it</span>
           </Typography>
         </Link>
-        <ButtonGroup color="inherit" variant="text">
+        <Switch>
+          <Route path="/project/:id">
+            <Box className={classes.title}>
+              <Title />
+            </Box>
+          </Route>
+        </Switch>
+        <ButtonGroup color="inherit" variant="text" className={classes.buttons}>
           <Button onClick={handleCreateProject}>Create project</Button>
           <Button>Log in</Button>
         </ButtonGroup>

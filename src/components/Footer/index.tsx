@@ -6,7 +6,7 @@ import {
 export default function Footer() {
   return (
     <Container component="footer">
-      <Typography align="center">
+      <Typography component="div" align="center">
         <Link href="https://github.com/ortophius" target="_blank">@ortophius</Link>
         {' / '}
         <Link href="https://github.com/ortophius/code-it" target="_blank">code-it</Link>
