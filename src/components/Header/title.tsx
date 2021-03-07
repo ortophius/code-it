@@ -20,7 +20,7 @@ export default function Title() {
   const dispatch = useDispatch();
   const classes = useStyles();
   const project = useSelector(selectProject);
-  const projectTitle = project.title;
+  const projectTitle = useSelector(selectProjectTitle);
   const [edit, setEdit] = useState(false);
 
   const textField = useRef<HTMLInputElement>();
