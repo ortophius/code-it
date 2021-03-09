@@ -1,4 +1,6 @@
+import { Grid } from '@material-ui/core';
 import axios from 'axios';
+import FileTree from 'components/FileTree';
 import useSSE from 'helpers/useSSE';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -32,9 +34,20 @@ export default function Project() {
 
   useSSE('project', fetchProjectInfo);
 
+  const fileClickHandler = (fileId: string) => { console.log(fileId); };
+
   return (
-    <>
-      { (project.notFound) ? 'No such project' : `id: ${id}, title: ${project.title}` }
-    </>
+    <Grid container item spacing={2} xs={12}>
+      <Grid item xs={2}>
+        { (project.root)
+          ? <FileTree rootFolder={project.root!} onFileClick={fileClickHandler} /> : null }
+      </Grid>
+      <Grid item xs={4}>
+        Кодъ))0
+      </Grid>
+      <Grid item xs={6}>
+        Дебуг))) лол
+      </Grid>
+    </Grid>
   );
 }

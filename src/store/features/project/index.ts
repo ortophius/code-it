@@ -25,6 +25,7 @@ const projectSlice = createSlice({
 });
 
 export const selectProject = (state: RootState) => state.project;
+export const selectProjectRoot = (state: RootState) => state.project.root;
 export const selectProjectTitle = (state: RootState) => state.project.title;
 export const selectIsNotFound = (state: RootState) => (!!(state.project.notFound));
 

@@ -14,6 +14,7 @@ interface ExampleState {
 }
 
 interface Folder {
+  _id: string,
   title: string;
   parent: Folder | null;
   children: Folder[];
@@ -21,9 +22,10 @@ interface Folder {
 }
 
 interface File {
+  _id: string;
   title: string;
   body: string;
-  parent: Folder;
+  parent: Folder | string;
 }
 
 interface ProjectState {

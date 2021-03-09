@@ -6,7 +6,7 @@ import Spacing from 'components/utils/Spacing';
 import Wrapper from 'components/utils/Wrapper';
 import Footer from 'components/Footer';
 import { Switch, Route } from 'react-router-dom';
-import Project from 'components/Project';
+import Project from 'components/ProjectLayout';
 
 export default function App(): JSX.Element {
   useEffect(() => {

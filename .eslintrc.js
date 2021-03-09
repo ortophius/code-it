@@ -7,6 +7,9 @@ module.exports = {
   parserOptions: {
     project: 'tsconfig.json',
   },
+  rules: {
+    no-underscore-dangle: off,
+  },
   settings: {
     'import/resolver': {
       alias: {
