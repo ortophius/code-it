@@ -1,8 +1,9 @@
 import { Grid } from '@material-ui/core';
 import axios from 'axios';
 import FileTree from 'components/FileTree';
+import useTreeStore from 'components/FileTree/Store';
 import useSSE from 'helpers/useSSE';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { notFound, selectProject, updateProjectInfo } from 'store/features/project';
@@ -11,8 +12,8 @@ import { notFound, selectProject, updateProjectInfo } from 'store/features/proje
 
 export default function Project() {
   const { id } = useParams<{ id: string }>();
+  const [file, changeFile] = useState<File['_id'] | null>(null)
   const dispatch = useDispatch();
-
   const project = useSelector(selectProject);
   async function fetchProjectInfo() {
     const url = (typeof window !== 'undefined') ? `/v1/project/${id}` : `http://localhost:8081/v1/project/${id}`;
@@ -34,13 +35,13 @@ export default function Project() {
 
   useSSE('project', fetchProjectInfo);
 
-  const fileClickHandler = (fileId: string) => { console.log(fileId); };
+  const fileClickHandler = (fileId: string) => { changeFile(fileId) };
 
   return (
     <Grid container item spacing={2} xs={12}>
       <Grid item xs={2}>
         { (project.root)
-          ? <FileTree rootFolder={project.root!} onFileClick={fileClickHandler} /> : null }
+          ? <FileTree rootFolder={project.root!} OnFileChange={fileClickHandler} /> : null }
       </Grid>
       <Grid item xs={4}>
         Кодъ))0

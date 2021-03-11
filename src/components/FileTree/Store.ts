@@ -6,7 +6,7 @@ export type TreeState = {
   currentDirectory: string | null;
 }
 
-const FILE_CHANGE = 'FileClick';
+const FILE_CHANGE = 'FileChange';
 const DIRECTORY_CHANGE = 'Test';
 
 interface ChangeFileAction {
@@ -31,7 +31,7 @@ export const changeDirectory = (id: string): ChangeDirAction => ({
   payload: id,
 });
 
-const initialState = { currentFile: null, currentDirectory: null };
+const initialState: TreeState = { currentFile: null, currentDirectory: null };
 
 const treeReducer = (state: TreeState, action: TreeAction) => {
   switch(action.type){
@@ -44,8 +44,16 @@ const treeReducer = (state: TreeState, action: TreeAction) => {
   }
 }
 
+type ContextState = {
+  dispatch: React.Dispatch<TreeAction> | (() => void),
+  state: TreeState,
+}
+
 const useTreeStore = () => useReducer(treeReducer, initialState)
 
-export const TreeContext = React.createContext<{dispatch: React.Dispatch<TreeAction> | (() => void) }>({ dispatch: () => {} })
+export const TreeContext = React.createContext<ContextState>({ 
+  dispatch: () => {},
+  state: initialState,
+})
 
 export default useTreeStore;

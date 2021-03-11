@@ -2,7 +2,7 @@ import {
   Express, Request, Response, Router,
 } from 'express';
 import {
-  createProject, getProject, editProject, ProjectChanges,
+  createProject, getProject, editProject, ProjectChanges, getFile
 } from '../db/Nodes';
 
 async function createNewProject(req: Request, res: Response) {
@@ -44,10 +44,29 @@ projectRouter.get('*', async (req, res) => {
   }
 });
 
+const fileRouter = Router();
+
+fileRouter.get('/:fileId', async (req, res) => {
+  const { fileId } = req.params;
+  
+  try {
+    const file = await getFile(fileId);
+    res.send(JSON.stringify(file));
+  } catch {
+    res.statusCode = 404;
+    res.send('No such file');
+  }
+})
+
+const nodeRouter = Router()
+
+nodeRouter.use('/file', fileRouter);
+
 const apiRouter = Router();
 
 apiRouter.post('/create', createNewProject);
 apiRouter.use('/project', projectRouter);
+apiRouter.use('/node', nodeRouter);
 
 export default function applyApiRoutes(app: Express) {
   app.use('/v1', apiRouter);

@@ -5,10 +5,10 @@ import useTreeStore, { TreeContext } from './Store';
 
 type FileTreeProps = {
   rootFolder: Folder;
-  onFileClick?: (id: string) => void;
+  OnFileChange?: (id: string) => void;
 }
 
-function FileTree({ rootFolder, onFileClick }: FileTreeProps) {
+function FileTree({ rootFolder, OnFileChange: onFileClick }: FileTreeProps) {
 
   const [localState, localDispatch] = useTreeStore();
 
@@ -18,7 +18,7 @@ function FileTree({ rootFolder, onFileClick }: FileTreeProps) {
   }, [localState.currentFile]);
 
   return (
-      <TreeContext.Provider value={{dispatch: localDispatch}}>
+      <TreeContext.Provider value={{dispatch: localDispatch, state: localState}}>
         <List>
           <FolderItem folder={rootFolder} root />
         </List>

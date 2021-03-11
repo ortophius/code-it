@@ -189,3 +189,14 @@ export async function editProject(link: string, changes: ProjectChanges) {
     return true;
   } catch (e) { throw new Error(e); }
 }
+
+export async function getFile(id: string): Promise<FileDocument> {
+  try {
+    const file = await File.findOne({ _id: id });
+    if (!file) throw new Error('No such file');
+    return file;
+  }
+  catch (e) {
+    throw new Error(e);
+  }
+}
