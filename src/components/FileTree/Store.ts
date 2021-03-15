@@ -47,6 +47,7 @@ const treeReducer = (state: TreeState, action: TreeAction) => {
 type ContextState = {
   dispatch: React.Dispatch<TreeAction> | (() => void),
   state: TreeState,
+  onFileClick: (id: string) => void
 }
 
 const useTreeStore = () => useReducer(treeReducer, initialState)
@@ -54,6 +55,7 @@ const useTreeStore = () => useReducer(treeReducer, initialState)
 export const TreeContext = React.createContext<ContextState>({ 
   dispatch: () => {},
   state: initialState,
+  onFileClick: () => {},
 })
 
 export default useTreeStore;

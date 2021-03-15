@@ -8,9 +8,10 @@ interface FileProps {
 }
 
 function FileItem({ file }: FileProps) {
-  const { dispatch } = useContext(TreeContext);
+  const { dispatch, onFileClick } = useContext(TreeContext);
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    onFileClick(file._id);
     dispatch(changeFile(file._id));
     if (typeof file.parent === 'string') dispatch(changeDirectory(file.parent));
     else dispatch(changeDirectory(file.parent._id));
